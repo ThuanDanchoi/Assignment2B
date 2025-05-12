@@ -9,7 +9,7 @@ This project implements Part B of the COS30019 Assignment 2. It builds upon the 
 
    * **LSTM**
    * **GRU**
-   * **Custom Model** (e.g., BiLSTM or Transformer-based)
+   * **Custom Model(XgBoost)** 
 3. **Flow-to-Time Conversion**: Convert predicted traffic flows to travel-time weights using the PDF v1.0 specification:
 
    * Free-flow: constant speed limit (60 km/h) + fixed delay (30 s).
@@ -25,20 +25,31 @@ This project implements Part B of the COS30019 Assignment 2. It builds upon the 
 
 ```
 TBRGS/
-├── part_a/                # Original search algorithms (DFS, BFS, GBFS, A*, ...)
-│   ├── algorithms/
-│   ├── test_cases/
-│   └── utils/
-├── part_b/                # Integration, ML, and interface
-│   ├── data/              # Raw and processed CSVs, cached subgraphs
-│   ├── models/            # Saved ML model weights
-│   ├── travel_time.py     # Flow-to-time conversion utilities
-│   ├── integrate.py       # End-to-end OSM subgraph + routing
-│   ├── app.py             # Streamlit dashboard
-│   └── tests/             # pytest test suite for Part B
-├── requirements.txt       # Project dependencies
-├── pytest.ini             # Pytest configuration (verbose output)
-└── README.md
+├── cache/                  # cached files (e.g. pickle, graphml…)
+├── part_a/                 # Part A: route-finding algorithms
+│   ├── algorithms/         # DFS, BFS, A*, GBFS, …
+│   ├── Docs/               # problem files, format …
+│   ├── test_cases/         # input/output test files
+│   ├── utils/              # helper (file parser, output formatter)
+│   ├── __init__.py
+│   ├── graph.py
+│   ├── run_all_test.py
+│   └── search.py
+├── part_b/                 # Part B: ML + integration + UI
+│   ├── data/               # raw & processed CSVs, cached subgraphs
+│   ├── gui/                # Streamlit dashboard, web assets
+│   ├── models/             # saved ML model weights (.pt/.h5, …)
+│   └── tests/              # code + artifacts Part B
+│       ├── __init__.py
+│       ├── data_processing.py
+│       ├── evaluate.py
+│       ├── integrate.py
+│       ├── metrics_summary.csv
+│       ├── train.py
+│       ├── travel_time.py
+│       └── weighted_graph.pkl
+└── tbrgs/                  # 🐍 Python virtual environment (venv)
+
 ```
 
 ## Installation
