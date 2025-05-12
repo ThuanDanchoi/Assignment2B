@@ -64,8 +64,8 @@ TBRGS/
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/ThuanDanchoi/Trafic-based-Route-Guidance-System.git
-   cd Trafic-based-Route-Guidance-System
+   git clone https://github.com/ThuanDanchoi/TBRGS.git
+   cd TBRGS
    ```
 2. **Create a virtual environment**
 
@@ -137,9 +137,8 @@ By default verbose output is enabled via `pytest.ini`.
 
 * **Duc Thuan Tran** (104330455)
 * **Vu Anh Le** (104653505)
-* **Chinmay Khokhar** (XXXXX)
-* **Phan Anh Nguyen** (XXXXX)
-
+* **harrish** (104333333)
+ 
 ## License
 
 This project is developed for educational purposes as part of the COS30019 – Introduction to Artificial Intelligence course at Swinburne University of Technology.
