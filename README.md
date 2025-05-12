@@ -115,7 +115,7 @@ Use the sidebar to select origin, destination, ML model, and routes to visualize
 Execute the full pytest suite (Part A + Part B):
 
 ```bash
-pytest
+pytest -v  part_b/test.py
 ```
 
 By default verbose output is enabled via `pytest.ini`.
