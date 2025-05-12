@@ -105,7 +105,7 @@ python part_b/integrate.py \
 Launch the interactive app:
 
 ```bash
-streamlit run part_b/app.py
+streamlit run part_b/gui/app.py
 ```
 
 Use the sidebar to select origin, destination, ML model, and routes to visualize on an embedded map.
