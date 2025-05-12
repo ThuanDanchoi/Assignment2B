@@ -25,31 +25,33 @@ This project implements Part B of the COS30019 Assignment 2. It builds upon the 
 
 ```
 TBRGS/
-├── cache/                  # cached files (e.g. pickle, graphml…)
+├── cache/                  # Cached files (pickles, graphml…)
+├── data/                   # Shared data assets
 ├── part_a/                 # Part A: route-finding algorithms
-│   ├── algorithms/         # DFS, BFS, A*, GBFS, …
-│   ├── Docs/               # problem files, format …
-│   ├── test_cases/         # input/output test files
-│   ├── utils/              # helper (file parser, output formatter)
+│   ├── algorithms/         # DFS, BFS, GBFS, A*, …
+│   ├── Docs/               # Problem specs, input formats
+│   ├── test_cases/         # Input/output test files
+│   ├── utils/              # Helpers (parsers, formatters)
 │   ├── __init__.py
 │   ├── graph.py
 │   ├── run_all_test.py
 │   └── search.py
 ├── part_b/                 # Part B: ML + integration + UI
-│   ├── data/               # raw & processed CSVs, cached subgraphs
-│   ├── gui/                # Streamlit dashboard, web assets
-│   ├── models/             # saved ML model weights (.pt/.h5, …)
-│   └── tests/              # code + artifacts Part B
-│       ├── __init__.py
-│       ├── data_processing.py
-│       ├── evaluate.py
-│       ├── integrate.py
-│       ├── metrics_summary.csv
-│       ├── train.py
-│       ├── travel_time.py
-│       └── weighted_graph.pkl
-└── tbrgs/                  # 🐍 Python virtual environment (venv)
-
+│   ├── data/               # Raw & processed CSVs, subgraph cache
+│   ├── gui/                # Streamlit dashboard & assets
+│   ├── models/             # Saved ML model weights
+│   ├── __init__.py
+│   ├── data_processing.py
+│   ├── evaluate.py
+│   ├── integrate.py
+│   ├── metrics_summary.csv
+│   ├── test.py
+│   ├── train.py
+│   ├── travel_time.py
+│   └── weighted_graph.pkl
+├── tbrgs/                  # 🐍 Python virtual environment
+├── requirements.txt        # Project dependencies
+└── README.md             
 ```
 
 ## Installation
