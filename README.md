@@ -2,24 +2,38 @@
 
 ## Introduction
 
-This project implements Part B of the COS30019 Assignment 2. It builds upon the route-finding algorithms developed in Part A by adding traffic-volume prediction and end-to-end integration to guide drivers along the fastest paths based on predicted travel times. The pipeline covers:
+This project implements an intelligent routing system that integrates traffic-volume prediction with traditional pathfinding algorithms to guide vehicles through the Boroondara region. Built for COS30019 Assignment 2 (Part B), the system combines real traffic data, machine learning models, and routing logic for smart urban navigation.
 
-1. **Data Processing**: Ingest and clean SCATS traffic-flow data from VicRoads.
-2. **Machine Learning Models**: Train and evaluate three different models for 15-minute-interval traffic-volume forecasting:
+The solution includes:
 
-   * **LSTM**
-   * **GRU**
-   * **Custom Model(XgBoost)** 
-3. **Flow-to-Time Conversion**: Convert predicted traffic flows to travel-time weights using the PDF v1.0 specification:
+1. **Traffic Data Preprocessing**  
+   Raw SCATS traffic flow data is cleaned, aligned by site and timestamp, and transformed into supervised learning format for forecasting.
 
-   * Free-flow: constant speed limit (60 km/h) + fixed delay (30 s).
-   * Congested: solve quadratic relation to derive speed and add delay.
-4. **OSM Subgraph & Routing Integration**:
+2. **ML-Based Volume Prediction**  
+   Three ML models are trained to predict traffic volume at 15-minute intervals:
+   - `LSTM`
+   - `GRU`
+   - `XGBoost` (custom non-sequential baseline)
 
-   * Extract an OpenStreetMap subgraph around SCATS origin-destination pairs.
-   * Assign computed travel-time weights to graph edges.
-   * Compute the top-*k* shortest simple paths by total travel time.
-5. **User Interface**: Provide both a CLI and a Streamlit web app for selecting origin, destination, ML model, and number of routes (*k*).
+3. **Travel-Time Estimation**  
+   Using the PDF v1.0 traffic model:
+   - Free-flow travel time is computed via constant speed + delay.
+   - Congested scenarios apply nonlinear conversion from flow to estimated speed.
+
+4. **Dynamic Graph Construction**  
+   A road network graph is built using coordinates and realistic geographic thresholds. Each edge reflects the predicted travel time from ML output.
+
+5. **Search Algorithms for Routing**  
+   Multiple routing strategies are implemented:
+   - A*, BFS, DFS, GBFS
+   - Custom strategies (CUS1, CUS2)
+   Each algorithm searches the updated ML-weighted graph to find optimal paths.
+
+6. **Web-Based Visualization Interface**  
+   A Streamlit app allows users to:
+   - Select origin/destination points
+   - Choose ML models and algorithms
+   - Visualize routes with realistic road geometry using OpenStreetMap + OSRM
 
 ## Project Structure
 
@@ -47,31 +61,25 @@ TBRGS/
 │   │       ├── graph_edges.csv           # Graph edge list with distances
 │   │       ├── locations_with_latlon.csv # Final location names with coordinates
 │   │       └── cleaned_scats_data.csv    # Cleaned and structured SCATS data
-
-│   ├── geo/                          # Scripts for geospatial processing
+│   ├── geo/                          # Scripts for graph generation and geolocation
 │   │   ├── generate_graph.py         # Create graph edges based on lat/lon distance
 │   │   ├── geocode.py                # Auto-geocode missing locations to lat/lon
 │   │   └── prep_geocode.py           # Extract unique location names to geocode
-
 │   ├── gui/
 │   │   └── app.py                    # Streamlit UI for interactive route prediction
-
 │   ├── model_training/              # ML model training scripts
 │   │   ├── lstm.py                   # Train LSTM model on traffic volume
 │   │   ├── gru.py                    # Train GRU model on traffic volume
 │   │   ├── xgb.py                    # Train XGBoost regression model
 │   │   └── compare_models.py         # Evaluate and compare performance of all models
-
 │   ├── models/                       # Saved trained models
 │   │   ├── lstm/lstm.h5
 │   │   ├── gru/gru.h5
 │   │   └── xgb/xgb.joblib
-
 │   ├── test_cases/
 │   │   ├── test_cases.py             # Batch test pipeline over multiple routes
 │   │   ├── test_results_*.log        # Saved logs of test runs
 │   │   └── __init__.py
-
 │   ├── data_processing.ipynb         # Jupyter notebook for cleaning raw SCATS data
 │   ├── graph_loader.py               # Function to load graph from CSV
 │   ├── graph_updater.py              # Update graph edge weights using ML predictions
@@ -79,97 +87,80 @@ TBRGS/
 │   ├── run_route.py                  # Minimal CLI interface for single route testing
 │   ├── tbrgs                         # Conda virtual environment name
 │   └── requirements.txt              # All Python dependencies (e.g. pandas, folium)
-            
 ```
 
 ## Installation
 
 ### Prerequisites
-
-* Python 3.9 or above
-* Git
+- Python 3.9+
+- Git
+- Streamlit
+- Conda or virtualenv (recommended)
 
 ### Setup
 
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/ThuanDanchoi/TBRGS.git
-   cd TBRGS
-   ```
-2. **Create a virtual environment**
-
-   ```bash
-   python -m venv venv
-   source venv/bin/activate   # macOS/Linux
-   venv\Scripts\activate    # Windows
-   ```
-3. **Install dependencies**
-
-   ```bash
-   pip install -r requirements.txt
-   ```
+```bash
+git clone https://github.com/ThuanDanchoi/TBRGS.git
+cd TBRGS
+python -m venv tbrgs
+source tbrgs/bin/activate  # Or: .\tbrgs\Scripts\activate on Windows
+pip install -r requirements.txt
+```
 
 ## Usage
 
-### Command-Line Interface (CLI)
-
-Run integration to compute top-*k* routes:
+### CLI Pipeline
 
 ```bash
-python part_b/integrate.py \
-    --origin 2000 \
-    --dest 3002 \
-    --model lstm \
-    --k 3
+python part_b/run_route.py
 ```
 
-* `--origin` / `--dest`: SCATS site IDs for origin and destination
-* `--model`: ML predictor to use (`lstm`, `gru`, or `custom`)
-* `--k`: number of shortest paths to return
+You can configure:
+- `start_node`
+- `end_node`
+- `model_name` (`xgb`, `lstm`, `gru`)
+- `algorithm` (`astar`, `bfs`, `dfs`, `gbfs`, `cus1`, `cus2`)
 
-### Web Dashboard (Streamlit)
-
-Launch the interactive app:
+### Web Interface (Streamlit)
 
 ```bash
 streamlit run part_b/gui/app.py
 ```
 
-Use the sidebar to select origin, destination, ML model, and routes to visualize on an embedded map.
+Features:
+- Interactive dropdowns for location, model, and algorithm.
+- Travel-time prediction results.
+- OSRM-enhanced map path display with proper road-following logic.
 
 ## Testing
 
-Execute the full pytest suite (Part A + Part B):
-
 ```bash
-pytest -v  part_b/test.py
+python part_b/test_cases/test_cases.py
 ```
 
-By default verbose output is enabled via `pytest.ini`.
+This logs results for 10 test cases with combinations of start-end nodes, ML models, and search algorithms.
 
 ## Features
 
-* **Data Processing** pipeline for traffic-flow CSVs
-* **ML Forecasting** with LSTM, GRU, and custom architectures
-* **Travel-Time Conversion** implementing PDF v1.0 rules
-* **OSM Subgraph Extraction** around SCATS OD pairs
-* **Top-*k* Routing** based on travel-time weights
-* **CLI & Web UI** for flexible user interaction
+- 📊 **ML Forecasting** for traffic volume using time series inputs
+- 🛣️ **Graph Routing** with realistic ML travel-time weights
+- 🗺️ **OpenStreetMap Integration** for geolocation fidelity
+- 🧪 **Batch Testing Framework** for performance comparison
+- 🌐 **User-Friendly Web UI** powered by Streamlit + Folium
+- 🔧 **Modular Architecture** for rapid experimentation
 
 ## Notes
 
-* OSM subgraphs are cached under `part_b/data/osm_subgraphs` to avoid repeated downloads.
-* Model weights are saved in `part_b/models` after training.
-* If no path exists between two sites, the CLI returns an empty list gracefully.
+- Edge generation threshold is configurable in `generate_graph.py`
+- OSRM API is used for realistic routing on the Streamlit map
+- Models are saved after training in `part_b/models/`
 
 ## Development Team
 
-* **Duc Thuan Tran** (104330455)
-* **Vu Anh Le** (104653505)
-* **harrish** (104333333)
- 
+- **Duc Thuan Tran** (104330455)
+- **Vu Anh Le** (104653505)
+- **Harrish** (104333333)
+
 ## License
 
-This project is developed for educational purposes as part of the COS30019 – Introduction to Artificial Intelligence course at Swinburne University of Technology.
-
+This project is for educational use in COS30019 – *Introduction to Artificial Intelligence*, Swinburne University of Technology.
