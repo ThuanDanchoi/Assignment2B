@@ -25,33 +25,61 @@ This project implements Part B of the COS30019 Assignment 2. It builds upon the 
 
 ```
 TBRGS/
-├── cache/                  # Cached files (pickles, graphml…)
-├── data/                   # Shared data assets
-├── part_a/                 # Part A: route-finding algorithms
-│   ├── algorithms/         # DFS, BFS, GBFS, A*, …
-│   ├── Docs/               # Problem specs, input formats
-│   ├── test_cases/         # Input/output test files
-│   ├── utils/              # Helpers (parsers, formatters)
-│   ├── __init__.py
-│   ├── graph.py
-│   ├── run_all_test.py
-│   └── search.py
-├── part_b/                 # Part B: ML + integration + UI
-│   ├── data/               # Raw & processed CSVs, subgraph cache
-│   ├── gui/                # Streamlit dashboard & assets
-│   ├── models/             # Saved ML model weights
-│   ├── __init__.py
-│   ├── data_processing.py
-│   ├── evaluate.py
-│   ├── integrate.py
-│   ├── metrics_summary.csv
-│   ├── test.py
-│   ├── train.py
-│   ├── travel_time.py
-│   └── weighted_graph.pkl
-├── tbrgs/                  # 🐍 Python virtual environment
-├── requirements.txt        # Project dependencies
-└── README.md             
+├── part_a/
+│   ├── algorithms/                   # Search algorithms for route finding
+│   │   ├── astar.py                  # A* (A-star) search
+│   │   ├── bfs.py                    # Breadth-First Search
+│   │   ├── dfs.py                    # Depth-First Search
+│   │   ├── gbfs.py                   # Greedy Best-First Search
+│   │   ├── cus1.py                   # Custom algorithm 1
+│   │   └── cus2.py                   # Custom algorithm 2
+│   ├── utils/
+│   │   ├── graph.py                  # Graph data structure and helper methods
+│   │   └── search.py                 # Unified interface to run different algorithms
+│   └── __init__.py
+
+├── part_b/
+│   ├── data/
+│   │   ├── raw/                      # Raw input datasets
+│   │   │   ├── Scats Data October 2006.csv
+│   │   │   └── Traffic_Count_Locations_with_LONG_LAT.csv
+│   │   └── processed/                # Preprocessed and enriched datasets
+│   │       ├── graph_edges.csv           # Graph edge list with distances
+│   │       ├── locations_with_latlon.csv # Final location names with coordinates
+│   │       └── cleaned_scats_data.csv    # Cleaned and structured SCATS data
+
+│   ├── geo/                          # Scripts for geospatial processing
+│   │   ├── generate_graph.py         # Create graph edges based on lat/lon distance
+│   │   ├── geocode.py                # Auto-geocode missing locations to lat/lon
+│   │   └── prep_geocode.py           # Extract unique location names to geocode
+
+│   ├── gui/
+│   │   └── app.py                    # Streamlit UI for interactive route prediction
+
+│   ├── model_training/              # ML model training scripts
+│   │   ├── lstm.py                   # Train LSTM model on traffic volume
+│   │   ├── gru.py                    # Train GRU model on traffic volume
+│   │   ├── xgb.py                    # Train XGBoost regression model
+│   │   └── compare_models.py         # Evaluate and compare performance of all models
+
+│   ├── models/                       # Saved trained models
+│   │   ├── lstm/lstm.h5
+│   │   ├── gru/gru.h5
+│   │   └── xgb/xgb.joblib
+
+│   ├── test_cases/
+│   │   ├── test_cases.py             # Batch test pipeline over multiple routes
+│   │   ├── test_results_*.log        # Saved logs of test runs
+│   │   └── __init__.py
+
+│   ├── data_processing.ipynb         # Jupyter notebook for cleaning raw SCATS data
+│   ├── graph_loader.py               # Function to load graph from CSV
+│   ├── graph_updater.py              # Update graph edge weights using ML predictions
+│   ├── pipeline.py                   # Core routing pipeline (used in both CLI & UI)
+│   ├── run_route.py                  # Minimal CLI interface for single route testing
+│   ├── tbrgs                         # Conda virtual environment name
+│   └── requirements.txt              # All Python dependencies (e.g. pandas, folium)
+            
 ```
 
 ## Installation
