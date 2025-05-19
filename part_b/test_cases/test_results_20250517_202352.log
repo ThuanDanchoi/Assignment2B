@@ -1,0 +1,38 @@
+
+===== Test Case 1 =====
+Path: WARRIGAL_RD N OF HIGH STREET_RD → POWER_ST N OF BURWOOD_RD → WARRIGAL_RD S OF RIVERSDALE_RD
+Time: 53 minutes
+
+===== Test Case 2 =====
+Path: GLENFERRIE_RD S OF COTHAM_RD → TRAFALGAR_RD N OF RIVERSDALE_RD → GLENFERRIE_RD S OF RIVERSDALE_RD
+Time: 12 minutes
+
+===== Test Case 3 =====
+Path: HIGH_ST NE OF BARKERS_RD → HIGH_ST SW OF HARP_ST → HIGH_ST NE OF PRINCESS_ST
+Time: 34 minutes
+
+===== Test Case 4 =====
+Path: COTHAM_RD W OF BURKE_RD → RIVERSDALE_RD W OF WARRIGAL_RD
+Time: 13 minutes
+
+===== Test Case 5 =====
+Path: RIVERSDALE_RD W OF BURKE_RD → COTHAM_RD W OF BURKE_RD → RIVERSDALE_RD W OF GLENFERRIE_RD
+Time: 19 minutes
+
+===== Test Case 6 =====
+Path: POWER_ST S OF BARKERS_RD → WARRIGAL_RD S OF HIGH STREET_RD
+Time: 23 minutes
+
+===== Test Case 7 =====
+Path: WARRIGAL_RD N OF HIGH STREET_RD → BELMORE_RD W OF BALWYN_RD → WARRIGAL_RD S OF RIVERSDALE_RD
+Time: 53 minutes
+
+===== Test Case 8 =====
+No valid path found.
+
+===== Test Case 9 =====
+No valid path found.
+
+===== Test Case 10 =====
+Path: BULLEEN_RD N OF THOMPSONS_RD → BARKERS_RD E OF HIGH_ST
+Time: 26 minutes
